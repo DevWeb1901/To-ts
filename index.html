@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>NovaWork Studio | Developer Premium</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root{
+--bg:#0b0b12;
+--card:#141428;
+--text:#fff;
+--accent:#7a2cff;
+--hover:#9b5cff;
+--neon:#8c2eff;
+}
+.light{
+--bg:#f4f4f8;
+--card:#fff;
+--text:#111;
+--accent:#7a2cff;
+--hover:#6a00ff;
+--neon:#9b5ff0;
+}
+*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;transition:0.3s}
+body{margin:0;background:var(--bg);color:var(--text);overflow-x:hidden;position:relative}
+
+/* PARTICLE CANVAS */
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2}
+
+/* HEADER */
+header{background:linear-gradient(135deg,var(--accent),#000);padding:140px 20px;text-align:center;position:relative;overflow:hidden;}
+header h1{font-size:48px;margin:0;letter-spacing:1px;z-index:5;position:relative;text-shadow:0 0 20px var(--neon)}
+header p{opacity:.85;margin-top:10px;font-size:18px;z-index:5;position:relative}
+
+/* NAV */
+nav{background:rgba(0,0,0,.6);display:flex;justify-content:center;gap:30px;padding:14px;position:sticky;top:0;z-index:10;backdrop-filter:blur(10px);}
+nav a{color:var(--text);text-decoration:none;font-weight:bold;opacity:.8;position:relative;}
+nav a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--hover);transition:0.3s;}
+nav a:hover::after{width:100%} nav a:hover{opacity:1}
+
+/* TOGGLE DARK/LIGHT */
+.toggle{position:fixed;top:15px;right:15px;background:var(--card);padding:10px 14px;border-radius:20px;cursor:pointer;font-size:14px;z-index:20}
+
+/* SECTION */
+.section{max-width:1200px;margin:auto;padding:80px 20px}
+.section h2{text-align:center;margin-bottom:50px;font-size:30px;letter-spacing:1px;text-shadow:0 0 10px var(--neon)}
+
+/* CARD */
+.card{background:var(--card);padding:30px;border-radius:16px;box-shadow:0 10px 25px rgba(0,0,0,.3);margin-bottom:30px;transition:0.4s;cursor:pointer;text-align:center;position:relative;}
+.card:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 0 40px var(--hover);filter:drop-shadow(0 0 15px var(--hover))}
+
+/* SERVICES GRID */
+.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+
+/* MODAL */
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.95);align-items:center;justify-content:center;z-index:50;overflow:auto;transition:0.5s;}
+.modal-content{background:var(--card);padding:30px;border-radius:16px;max-width:900px;text-align:center;position:relative;transform:translateY(-50px) scale(0.95);opacity:0;transition:0.5s;}
+.modal-show .modal-content{transform:translateY(0) scale(1);opacity:1;}
+.modal-content h3{margin-top:0;margin-bottom:15px;}
+.modal-close{position:absolute;top:10px;right:15px;cursor:pointer;font-size:20px;font-weight:bold;}
+.modal iframe{width:100%;height:500px;border:none;border-radius:12px;margin-top:20px;}
+
+/* FOOTER */
+footer{background:#000;padding:25px;text-align:center;opacity:.85;}
+
+/* ANIMATED COINS */
+.coin{position:absolute;width:30px;height:30px;border-radius:50%;background:radial-gradient(circle,#ffd700,#ffa500);animation:spin 2s linear infinite;}
+@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+/* PROJECT LIST */
+.project-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+.project{background:var(--card);padding:25px;border-radius:16px;transition:0.4s;cursor:pointer;text-align:center;position:relative;}
+.project:hover{transform:scale(1.07);box-shadow:0 0 40px var(--hover);filter:drop-shadow(0 0 20px var(--hover))}
+.project h4{margin:0 0 10px 0;text-shadow:0 0 8px var(--neon)}
+.project input{width:100%;padding:12px;border-radius:8px;border:none;margin-bottom:20px;outline:none;font-size:16px}
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+<div class="toggle" onclick="toggleMode()">🌙 / ☀️</div>
+
+<header>
+<h1>NovaWork Studio</h1>
+<p>Creative Developer • Game • Web • Software • Premium</p>
+<p>Service WhatsApp: <a href="https://wa.me/6285377457757" style="color:#fff;text-decoration:underline">+62 853-7745-7757</a></p>
+</header>
+
+<nav>
+<a href="#about" onclick="ui()">About</a>
+<a href="#services" onclick="ui()">Services</a>
+<a href="#team" onclick="ui()">Team</a>
+<a href="#dashboard" onclick="ui()">Projects</a>
+</nav>
+
+<section id="services" class="section">
+<h2>Our Services</h2>
+<div class="services">
+<div class="card" onclick="openModal('🎮 Roblox Game Development\nDetail: Custom games for Roblox with premium scripts & UI')">🎮 Roblox Game Development</div>
+<div class="card" onclick="openModal('💻 Website Development\nDetail: Professional website for games & studio branding')">💻 Website Development</div>
+<div class="card" onclick="openModal('⚙️ System & Script Development\nDetail: Automated tools & scripts for studio projects')">⚙️ System & Script Development</div>
+<div class="card" onclick="openModal('🎨 UI / UX Design\nDetail: Futuristic interface & user experience design')">🎨 UI / UX Design</div>
+</div>
+</section>
+
+<section id="team" class="section">
+<h2>Our Team</h2>
+<div class="team">
+<div class="member"><h3>Jibran F.A</h3><p>Owner & Founder</p></div>
+<div class="member"><h3>M. Akmal A</h3><p>Co-Founder</p></div>
+</div>
+</section>
+
+<section id="dashboard" class="section">
+<h2>Projects Dashboard</h2>
+<input type="text" id="searchProject" placeholder="Search project..." onkeyup="filterProjects()">
+<div class="project-list" id="projectList">
+<div class="project" onclick="openGame('https://www.roblox.com/share?code=4b7d51b9c472124d96cc25b315d71145&type=ExperienceDetails&stamp=1769828777544')"><h4>Wayae Tower</h4><p>Roblox Game</p></div>
+<div class="project" onclick="openGame('https://www.roblox.com/share?code=135d5f3e7970844890a55b266be3266f&type=ExperienceDetails&stamp=1769828799128')"><h4>City Expedition</h4><p>Roblox Game</p></div>
+<div class="project" onclick="openGame('https://www.roblox.com/share?code=b72640d9e94f99409f51b9dc68cc75ce&type=ExperienceDetails&stamp=1769828754619')"><h4>SDIT Bina Insani</h4><p>Roblox Game</p></div>
+</div>
+</section>
+
+<!-- MODAL -->
+<div class="modal" id="serviceModal">
+<div class="modal-content">
+<span class="modal-close" onclick="closeModal()">×</span>
+<h3 id="modalTitle">Service Detail</h3>
+<p id="modalDesc"></p>
+<iframe id="gameFrame" style="display:none;"></iframe>
+</div>
+</div>
+
+<footer>© 2026 NovaWork Studio</footer>
+
+<audio id="sound" preload="auto"><source src="https://cdn.pixabay.com/audio/2022/03/15/audio_0a4f8c7a63.mp3"></audio>
+
+<script>
+// SOUND UI
+let ready=false;
+const sound=document.getElementById("sound");
+document.body.addEventListener("click",()=>{sound.play().then(()=>{sound.pause();sound.currentTime=0;ready=true})},{once:true});
+function ui(){if(!ready)return;sound.currentTime=0;sound.play();}
+
+// DARK/LIGHT MODE
+function toggleMode(){ui();document.body.classList.toggle("light");}
+
+// PARTICLES NEON INTENS
+const c=document.getElementById("particles"),ctx=c.getContext("2d");
+c.width=innerWidth;c.height=innerHeight;
+let ps=[];
+for(let i=0;i<300;i++)ps.push({x:Math.random()*c.width,y:Math.random()*c.height,r:2+Math.random()*4,dx:(Math.random()-.5)*3,dy:(Math.random()-.5)*3});
+function anim(){ctx.clearRect(0,0,c.width,c.height);ps.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle="rgba(140,46,255,.7)";ctx.fill();p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>c.width)p.dx*=-1;if(p.y<0||p.y>c.height)p.dy*=-1;});requestAnimationFrame(anim);}
+anim();
+window.onresize=()=>{c.width=innerWidth;c.height=innerHeight;}
+
+// COINS JATUH DAN MUTER
+function createCoin(){let coin=document.createElement("div");coin.className="coin";coin.style.left=Math.random()*window.innerWidth+"px";coin.style.top=0+"px";coin.style.width=20+Math.random()*20+"px";coin.style.height=20+Math.random()*20+"px";document.body.appendChild(coin);let dy=2+Math.random()*4;function fall(){coin.style.top=parseFloat(coin.style.top)+dy+"px";if(parseFloat(coin.style.top)<window.innerHeight)requestAnimationFrame(fall);else coin.remove()}fall()}
+for(let i=0;i<40;i++){createCoin()}
+
+// FILTER PROJECTS
+function filterProjects(){
+let input=document.getElementById("searchProject").value.toLowerCase();
+let projects=document.getElementById("projectList").children;
+for(let p of projects){
+let title=p.querySelector("h4").textContent.toLowerCase();
+p.style.display=title.includes(input)?"block":"none";
+}
+}
+
+// MODAL FUNCTIONS
+function openModal(text){
+ui();
+document.getElementById("modalDesc").innerText=text;
+document.getElementById("gameFrame").style.display="none";
+const modal=document.getElementById("serviceModal");
+modal.classList.add("modal-show");
+modal.style.display="flex";
+}
+function closeModal(){
+ui();
+const modal=document.getElementById("serviceModal");
+modal.classList.remove("modal-show");
+setTimeout(()=>{modal.style.display="none"},300);
+}
+
+// OPEN ROBLOX GAME
+function openGame(url){
+ui();
+document.getElementById("modalDesc").innerText="Loading game...";
+let iframe=document.getElementById("gameFrame");
+iframe.src=url;
+iframe.style.display="block";
+const modal=document.getElementById("serviceModal");
+modal.classList.add("modal-show");
+modal.style.display="flex";
+}
+</script>
+
+</body>
+</html>
